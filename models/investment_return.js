@@ -10,11 +10,17 @@ const investmentReturnSchema = new Schema({
         enum: ['profit', 'loss']
     },
     return_percentage: {
-        type: String
+        type: Number
     },
     investor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    before_earning: {
+        type: Number
+    },
+    after_earning: {
+        type: Number
     }
 },
 {

@@ -21,6 +21,7 @@ const createEarning = async (req, res, next) => {
         earning.title = title
         earning.earning_type = earning_type
         earning.return_percentage = return_percentage
+        earning.before_earning = investor.balance
         invester_percent = (return_percentage/100) * investor.balance
         if (earning_type == "profit"){
             investor.balance += invester_percent
@@ -28,6 +29,7 @@ const createEarning = async (req, res, next) => {
             investor.balance -= invester_percent
             
         }
+        earning.after_earning = investor.balance
         await investor.save()
         await earning.save()
           })
