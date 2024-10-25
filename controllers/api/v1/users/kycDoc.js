@@ -6,13 +6,14 @@ const kycDoc = async (req, res, next) => {
     return errorResponse(res, 'Please upload at least one document')
   }
   pictures.forEach(file => {
+    console.log('-------------files', file)
     if (file['fieldname'] == "picture") {
       user.picture = file['path']
-    } else {
+    } else  {
       user.kyc_status = 'InProgress'
       const existingDoc = user.kyc_docs.find(doc => doc.name === file.originalname);
       if (!existingDoc) {
-        user.kyc_docs.push({ name: file.originalname, url: file.path });
+        user.kyc_docs.addToSet({ name: file.originalname, url: file.path });
       }
     }
   });

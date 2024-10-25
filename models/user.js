@@ -6,31 +6,42 @@ const {encryptPassword} = require('../utils/password')
 const userSchema = new Schema({
   first_name: {
     type: String,
-    index: true
+    required: [true, "first name is required"]
   },
   last_name: {
-    type: String
+    type: String,
+    required: [true, "last name is required"],
   },
   email: {
     type: String,
-    unique: true,
-    required: true,
+    required: [true, 'Email is required'],
+    validate: {
+      validator: async function (value) {
+        if (!value.includes('@')) {
+          throw new Error('Invalid Email format')
+        }
+        return true
+      },
+      message: 'Invalid email'
+    },
     trim: true,
     lowercase: true,
     index: true
   },
   password: {
     type: String,
-    required: true
   },
   authToken: {
     type: String
   },
   role: {
-    type: String
+    type: String,
+    enum: ['admin', 'investor'],
+    message: '{VALUE} is not valid role'
   },
   balance: {
-    type: Number
+    type: Number,
+    default: 0
   },
   kyc_status: {
     type: String,
@@ -72,6 +83,17 @@ userSchema.methods.generateAuthToken = function () {
   return token
 }
 
+userSchema.virtual('investments', {
+  ref: 'Investment',
+  localField: '_id',
+  foreignField: 'investor'
+})
+
+userSchema.virtual('investment_returns', {
+  ref: 'investment_return',
+  localField: '_id',
+  foreignField: 'investor'
+})
 
 const User = mongoose.model('User', userSchema)
 

@@ -1,3 +1,3 @@
 const login  = require('./login')
-
-module.exports = login
+const logout = require('./logout')
+module.exports = {login, logout}

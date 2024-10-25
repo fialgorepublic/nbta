@@ -4,10 +4,12 @@ const path = require('path')
 const mongoose = require("mongoose")
 const morgan = require('morgan')
 const multer = require('multer');
+var cors = require('cors')
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {cb(null, 'storage/')},
   filename: (req, file, cb) => {
-    cb(null, Date.now()+path.extname(file.originalname))
+    cb(null, Date.now()+"-"+(file.originalname))
   },
 })
 const upload = multer({storage: storage})
@@ -19,6 +21,8 @@ app.use(express.json({ limit: '50mb' }))
 app.use(morgan('common'))
 app.use('/storage', express.static(path.join(__dirname, './storage')))
 app.use(upload.any())
+app.use(cors())
+
 app.use('/api/v1', apiRoutes)
 
 

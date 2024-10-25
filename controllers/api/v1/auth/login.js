@@ -2,13 +2,16 @@ const User = require('../../../../models/user')
 const bcrypt = require('bcrypt')
 const {successResponse, errorResponse} = require('../../../../utils/response')
 const login = async (req, res, next) => {
-  const { email, password } = req.body
+  const { email, password, platform } = req.body
   const user = await User.findOne({email: email})
 
   if ( !user ) {
     return errorResponse(res, 'Invalid Email and Password')
   }
 
+  if (user && user.role === 'investor' && platform === 'adminPanel') {
+    return errorResponse(res, 'You are not allowed to login')
+  }
   const valid = await bcrypt.compare(password, user.password)
 
   if (!valid) {

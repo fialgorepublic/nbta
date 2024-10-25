@@ -1,3 +1,3 @@
 const create = require('./create')
-
-module.exports = {create}
+const allInvestments = require('./list')
+module.exports = {create, allInvestments}
