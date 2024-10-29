@@ -9,10 +9,10 @@ var cors = require('cors')
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {cb(null, 'storage/')},
   filename: (req, file, cb) => {
-    cb(null, Date.now()+"-"+(file.originalname))
+    cb(null, file.originalname + "-" + Date.now() + path.extname(file.originalname))
   },
 })
-const upload = multer({storage: storage})
+const upload = multer({storage})
 const apiRoutes = require('./routes/api/v1')
 const {connectDB} = require('./utils/connection-manager')
 const app = express()

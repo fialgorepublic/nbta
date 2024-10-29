@@ -48,7 +48,10 @@ const userSchema = new Schema({
     enum: ['NotStarted', 'InProgress', 'Verified'],
     default: 'NotStarted'
   },
-  picture: {
+  profile_picture: {
+    type: String
+  },
+  kyc_picture: {
     type: String
   },
   kyc_docs: [
@@ -69,6 +72,15 @@ userSchema.pre('save', async function(next) {
   return next()
 })
 
+userSchema.pre('findOneAndDelete', async function(next) {
+  const investorId = this.getQuery()["_id"];
+  try {
+    await mongoose.model('Investment').deleteMany({investor: investorId}, next())
+  } catch(err) {
+    console.log('=================This Error', err)
+  }
+})
+
 userSchema.methods.generateAuthToken = function () {
   const maxAge = 3 * 24 * 60 * 60
   const token = jwt.sign(
@@ -83,17 +95,6 @@ userSchema.methods.generateAuthToken = function () {
   return token
 }
 
-userSchema.virtual('investments', {
-  ref: 'Investment',
-  localField: '_id',
-  foreignField: 'investor'
-})
-
-userSchema.virtual('investment_returns', {
-  ref: 'investment_return',
-  localField: '_id',
-  foreignField: 'investor'
-})
 
 const User = mongoose.model('User', userSchema)
 

@@ -1,9 +1,10 @@
 const create = require('./create')
-const kycDoc = require('./kycDoc')
-const getById = require('./getById')
-const allInvestors  = require('./allInvestors')
-const deleteInvestor = require('./deleteInvestor')
+const ManagekycDoc = require('./manage-kyc-docs')
+const fetchById = require('./fetchById')
+const list  = require('./list')
+const deleteInvestor = require('./delete')
 const update = require('./update')
-const earningHistory = require('./earning_history')
-const investorRecord = require('./investorRecords')
-module.exports = { create, kycDoc, getById, allInvestors, deleteInvestor, update, earningHistory, investorRecord }
+const dashboard = require('./dashboard')
+const verified = require('./verified')
+const manageProfilePic = require('./manage-profile-pic')
+module.exports = { create, ManagekycDoc, fetchById, list, deleteInvestor, update, dashboard, verified, manageProfilePic }

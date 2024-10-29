@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-const {successResponse, errorResponse} = require('../utils/response')
+const {errorResponse} = require('../utils/response')
+
 const ensureAuth = async (req, res, next) => {
   token = req.header('Authorization')
-  console.log('========================', token)
+  
   if (token) {
     decode = null
     try {
